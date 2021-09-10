@@ -1,0 +1,7 @@
+dash==2.0.0rc2
+dash-bootstrap-components
+plotly
+pandas
+multiprocess
+diskcache
+psutil
