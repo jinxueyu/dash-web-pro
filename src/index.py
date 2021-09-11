@@ -2,12 +2,12 @@ from dash import html, dcc
 
 from core.app import app
 
-from callbacks import menu
-from callbacks import chat
-from callbacks import nlp
+from metronic.callbacks import menu
+from apps.chat import callbacks
+from apps.nlp import callbacks
 from core import callbacks
 
-from controller import nlp
+from apps.nlp import controller
 
 app.layout = html.Div([
     dcc.Location(id='url', refresh=False),
