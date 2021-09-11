@@ -1,9 +1,11 @@
+import json
 import dash
 from dash import Output, Input, State, ALL, MATCH
 
 from core.app import app
 
 from core.controller import Controllers
+from engine.widgets_manager import Widgets
 
 
 def exec_action_func(control, action, **params):
@@ -15,17 +17,19 @@ def exec_action_func(control, action, **params):
 
 
 def parse_action(ctx):
-    control = None  # input_id['control']
-    action = None  # input_id['action']
+    triggered_input_id = ctx.triggered[0]["prop_id"].split(".")[0]
+    input_id = json.loads(triggered_input_id)
+    control = input_id['control']
+    action = input_id['action']
 
-    for inputs in ctx.inputs_list:
-        for ipt in inputs:
-            if 'value' in ipt and ipt['value'] is not None:
-                action = ipt['id']['action']
-                control = ipt['id']['control']
-                break
-        if control is not None and action is not None:
-            break
+    # for inputs in ctx.inputs_list:
+    #     for ipt in inputs:
+    #         if 'value' in ipt and ipt['value'] is not None:
+    #             action = ipt['id']['action']
+    #             control = ipt['id']['control']
+    #             break
+    #     if control is not None and action is not None:
+    #         break
 
     return control, action
 
@@ -70,8 +74,8 @@ def page_routing(pathname):
     State('toolbar_title', 'children'),
     prevent_initial_call=True
 )
-def load_page(n_clicks, state0, state1):
-    print('load_page fire:', n_clicks)
+def btn_link(n_clicks, state0, state1):
+    print('btn_link fire:', n_clicks)
     ctx = dash.callback_context
 
     print('     ', ctx.triggered, '\n    states_list  ==', ctx.states_list, '\n  states  ==', ctx.states,
@@ -80,8 +84,6 @@ def load_page(n_clicks, state0, state1):
     if ctx.triggered[0]['value'] is None:
         print('   >> without bullets <<  ')
         return state0, state1
-    # triggered_input_id = ctx.triggered[0]["prop_id"].split(".")[0]
-    # input_id = json.loads(triggered_input_id)
 
     control, action = parse_action(ctx)
     if control is None or action is None:
@@ -91,15 +93,8 @@ def load_page(n_clicks, state0, state1):
     return exec_action_func(control, action)
 
 
-# {'type': 'output_commit'}
-@app.callback(
-    Output({'type': 'action_backdrop',  'control': MATCH, 'action': MATCH, 'name': 0}, 'children'),
-    Input({'type': 'btn_action', 'control': MATCH, 'action': MATCH, 'name': ALL}, 'n_clicks'),
-    State({'type': 'action_input', 'control': MATCH, 'action': MATCH, 'name': ALL}, 'value'),
-    prevent_initial_call=True
-)
-def input_action(n_clicks, states_input):
-    print('input_action fire:', n_clicks)
+def action_callback(n_clicks, states_input):
+    result = {'triggered': True}
     ctx = dash.callback_context
     # if ctx.triggered[0]['value'] is None:
     #     print('   >> without bullets <<  ')
@@ -109,12 +104,14 @@ def input_action(n_clicks, states_input):
 
     if ctx.triggered[0]['value'] is None:
         print('   >> without bullets <<  ')
-        return None
+        result['triggered'] = False
+        return result
 
     control, action = parse_action(ctx)
     if control is None or action is None:
         print('   >> without bullets <<  ')
-        return None
+        result['triggered'] = False
+        return result
 
     req = {}
     for states in ctx.states_list:
@@ -127,4 +124,34 @@ def input_action(n_clicks, states_input):
             print('   ==>>>> ', type(input_id), input_id, input_value)
             req[input_id['name']] = input_value
 
-    return exec_action_func(control, action, **req)
+    result['result'] = exec_action_func(control, action, **req)
+    return result
+
+
+@app.callback(
+    Output({'type': 'action_backdrop',  'control': MATCH, 'action': MATCH, 'name': 0}, 'children'),
+    Input({'type': 'btn_action', 'control': MATCH, 'action': MATCH, 'name': ALL}, 'n_clicks'),
+    State({'type': 'action_input', 'control': MATCH, 'action': MATCH, 'name': ALL}, 'value'),
+    prevent_initial_call=True
+)
+def btn_action(n_clicks, states_input):
+    print('btn_action fire:', n_clicks)
+    result = action_callback(n_clicks, states_input)
+    if result is None or result['triggered'] is False:
+        return None
+    print('>>>>>>>>>>>result', result)
+    return Widgets.instance().get_widget('common.backdrop')()
+
+
+@app.callback(
+    Output({'type': 'action_box',  'control': MATCH, 'action': MATCH}, 'children'),
+    Input({'type': 'btn_action', 'control': MATCH, 'action': MATCH, 'name': ALL}, 'n_clicks'),
+    State({'type': 'action_input', 'control': MATCH, 'action': MATCH, 'name': ALL}, 'value'),
+    prevent_initial_call=True
+)
+def btn_interact(n_clicks, states_input):
+    print('btn_interact fire:', n_clicks)
+    result = action_callback(n_clicks, states_input)
+    if result is None or result['triggered'] is False:
+        return None
+    return result

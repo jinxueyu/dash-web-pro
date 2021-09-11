@@ -13,10 +13,10 @@ menu_config = [
             'id': 1,
             'modules': [
                 {
-                    'name': '分词',
-                    'id': 'seg',
+                    'name': 'ide',
+                    'id': 'ide',
                     'control': 'nlp',
-                    'action': 'seg_page',
+                    'action': 'ide_page',
                     'icon': 'app-indicator'
                 },
                 {
@@ -115,18 +115,20 @@ class NlpController(Controller):
         return layout.container(self.__build_cards_widget()), toolbar_title(title='Hello', sub_title='Nuan')
 
     def account_basic_info(self, **kwargs):
-        toolbar_title = Widgets.instance().get_widget('content.toolbar_title')
-
-        info_page = Widgets.instance().get_widget('common.account_basic_info')
-        print('------', info_page)
-        checklist = Widgets.instance().get_input_widget('checklist', 'nlp', 'action', 'communication')
-
-        return info_page(checklist_communication=checklist), toolbar_title(title='Hello', sub_title='basic')
+        return layout.account_basic_info()
 
     def action(self, market, communication, **kwargs):
         print(' nlp controller >>>>>>>>  req', market, communication)
-        layout = Widgets.instance().get_widget('common.backdrop')
-        return layout()
+        backdrop_layout = Widgets.instance().get_widget('common.backdrop')
+        return backdrop_layout()
+
+    def ide_page(self):
+        # ide_layout = layout.ide_layout()
+        return layout.ide_layout('')
+
+    def ide_commit(self, code, **kwargs):
+        result = 'hahahahha'
+        return code
 
 
 controller = NlpController()

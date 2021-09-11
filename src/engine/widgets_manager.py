@@ -94,6 +94,7 @@ class Widgets(object):
     _instance_lock = threading.Lock()
 
     def __init__(self, *args, **kwargs):
+        # todo more custom layout
         print('widgets...init....')
         self.init(*args, **kwargs)
         time.sleep(1)
@@ -144,6 +145,9 @@ class Widgets(object):
 
     def get_layout(self, layout_name):
         return self.layout_dict['layouts.'+layout_name]
+
+
+widgets = Widgets.instance('metronic')
 
 
 def test_dict(d):

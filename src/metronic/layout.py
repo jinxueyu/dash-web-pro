@@ -5,11 +5,8 @@ from metronic.layouts.nav_menu import build_nav_menu
 from engine.widgets_manager import Widgets
 
 
-widegets = Widgets.instance(os.getcwd() + '/metronic')
-
-
 def build_normal_page(content_container, menu_config):
-    widegets = Widgets.instance(os.getcwd()+'/metronic')
+    widegets = Widgets.instance()
 
     layout_aside = widegets.get_layout('aside.aside')
     aside_menu = widegets.get_layout('aside.menu')

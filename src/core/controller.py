@@ -31,6 +31,7 @@ class Controllers(object):
         return self.__controllers.get(name, None)
 
     def regist(self, controller):
+        print('...reg controller', controller.name)
         self.__controllers[controller.name] = controller
 
 

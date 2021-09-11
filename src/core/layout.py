@@ -21,7 +21,6 @@ index_string = """<!DOCTYPE html>
 
         <!--end::Page Custom Javascript-->
         <!--end::Javascript-->
-        <div id='{"type": "action_backdrop_container",  "control": "nlp", "action": "action", "name": 0}'></div>
     </body>
 </html>"""
 

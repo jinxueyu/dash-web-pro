@@ -1,0 +1,171 @@
+                                <!--begin::Stepper-->
+								<div class="stepper stepper-pills stepper-column d-flex flex-column flex-xl-row flex-row-fluid" id="kt_create_account_stepper">
+									<!--begin::Aside-->
+									<div class="d-flex justify-content-center bg-body rounded justify-content-xl-start flex-row-auto w-100 w-xl-300px w-xxl-400px me-9">
+										<!--begin::Wrapper-->
+										<div class="px-6 px-lg-10 px-xxl-15 py-20">
+											<!--begin::Nav-->
+											<div class="stepper-nav">
+												<!--begin::Step 1-->
+												<div class="stepper-item current" data-kt-stepper-element="nav">
+													<!--begin::Line-->
+													<div class="stepper-line w-40px"></div>
+													<!--end::Line-->
+													<!--begin::Icon-->
+													<div class="stepper-icon w-40px h-40px">
+														<i class="stepper-check fas fa-check"></i>
+														<span class="stepper-number">1</span>
+													</div>
+													<!--end::Icon-->
+													<!--begin::Label-->
+													<div class="stepper-label">
+														<h3 class="stepper-title">Account Type</h3>
+														<div class="stepper-desc fw-bold">Setup Your Account Details</div>
+													</div>
+													<!--end::Label-->
+												</div>
+												<!--end::Step 1-->
+												<!--begin::Step 2-->
+												<div class="stepper-item" data-kt-stepper-element="nav">
+													<!--begin::Line-->
+													<div class="stepper-line w-40px"></div>
+													<!--end::Line-->
+													<!--begin::Icon-->
+													<div class="stepper-icon w-40px h-40px">
+														<i class="stepper-check fas fa-check"></i>
+														<span class="stepper-number">2</span>
+													</div>
+													<!--end::Icon-->
+													<!--begin::Label-->
+													<div class="stepper-label">
+														<h3 class="stepper-title">Account Settings</h3>
+														<div class="stepper-desc fw-bold">Setup Your Account Settings</div>
+													</div>
+													<!--end::Label-->
+												</div>
+												<!--end::Step 2-->
+												<!--begin::Step 3-->
+												<div class="stepper-item" data-kt-stepper-element="nav">
+													<!--begin::Line-->
+													<div class="stepper-line w-40px"></div>
+													<!--end::Line-->
+													<!--begin::Icon-->
+													<div class="stepper-icon w-40px h-40px">
+														<i class="stepper-check fas fa-check"></i>
+														<span class="stepper-number">3</span>
+													</div>
+													<!--end::Icon-->
+													<!--begin::Label-->
+													<div class="stepper-label">
+														<h3 class="stepper-title">Business Info</h3>
+														<div class="stepper-desc fw-bold">Your Business Related Info</div>
+													</div>
+													<!--end::Label-->
+												</div>
+												<!--end::Step 3-->
+												<!--begin::Step 4-->
+												<div class="stepper-item" data-kt-stepper-element="nav">
+													<!--begin::Line-->
+													<div class="stepper-line w-40px"></div>
+													<!--end::Line-->
+													<!--begin::Icon-->
+													<div class="stepper-icon w-40px h-40px">
+														<i class="stepper-check fas fa-check"></i>
+														<span class="stepper-number">4</span>
+													</div>
+													<!--end::Icon-->
+													<!--begin::Label-->
+													<div class="stepper-label">
+														<h3 class="stepper-title">Billing Details</h3>
+														<div class="stepper-desc fw-bold">Set Your Payment Methods</div>
+													</div>
+													<!--end::Label-->
+												</div>
+												<!--end::Step 4-->
+												<!--begin::Step 5-->
+												<div class="stepper-item" data-kt-stepper-element="nav">
+													<!--begin::Line-->
+													<div class="stepper-line w-40px"></div>
+													<!--end::Line-->
+													<!--begin::Icon-->
+													<div class="stepper-icon w-40px h-40px">
+														<i class="stepper-check fas fa-check"></i>
+														<span class="stepper-number">5</span>
+													</div>
+													<!--end::Icon-->
+													<!--begin::Label-->
+													<div class="stepper-label">
+														<h3 class="stepper-title">Completed</h3>
+														<div class="stepper-desc fw-bold">Woah, we are here</div>
+													</div>
+													<!--end::Label-->
+												</div>
+												<!--end::Step 5-->
+											</div>
+											<!--end::Nav-->
+										</div>
+										<!--end::Wrapper-->
+									</div>
+									<!--begin::Aside-->
+									<!--begin::Content-->
+									<div class="d-flex flex-row-fluid flex-center bg-body rounded">
+										<!--begin::Form-->
+										<form class="py-20 w-100 w-xl-700px px-9" novalidate="novalidate" id="kt_create_account_form" action="#">
+											<div class="current" data-kt-stepper-element="content">
+												<!--begin::Wrapper-->
+												<div class="w-100">
+													<!--begin::Heading-->
+													<div class="pb-10 pb-lg-15">
+														<!--begin::Title-->
+														<h2 class="fw-bolder d-flex align-items-center text-dark">Choose Account Type
+														<i class="fas fa-exclamation-circle ms-2 fs-7" data-bs-toggle="tooltip" title="Billing is issued based on your selected account type"></i></h2>
+														<!--end::Title-->
+														<!--begin::Notice-->
+														<div class="text-muted fw-bold fs-6">If you need more info, please check out
+														<a href="#" class="link-primary fw-bolder">Help Page</a>.</div>
+														<!--end::Notice-->
+													</div>
+													<!--end::Heading-->
+													<!--begin::Input group-->
+													<div class="fv-row">
+													{{ide_widget}}
+													</div>
+													<div class="fv-row mb-10">
+														<!--end::Label-->
+														<label class="form-label">Business Description</label>
+														<!--end::Label-->
+														<!--begin::Input-->
+														<textarea name="business_description" class="form-control form-control-lg form-control-solid" rows="3" value="{{result}}"></textarea>
+														<!--end::Input-->
+													</div>
+												</div>
+											</div>
+											<!--begin::Actions-->
+											<div class="d-flex flex-stack pt-10">
+												<!--begin::Wrapper-->
+												<div>
+													<div id="{'type': 'action_box',  'control': 'nlp', 'action': 'ide_commit'}"></div>
+													<button id='{"action":"ide_commit","control":"nlp","name":"btn_123456","type":"btn_action"}' type="button" class="btn btn-lg btn-primary" data-kt-stepper-action="next">
+														submit
+													<!--begin::Svg Icon | path: icons/duotone/Navigation/Right-2.svg-->
+													<span class="svg-icon svg-icon-4 ms-1 me-0">
+														<img src="assets/media/icons/duotone/Navigation/Right-2.svg">
+<!--														<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">-->
+<!--															<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">-->
+<!--																<polygon points="0 0 24 0 24 24 0 24" />-->
+<!--																<rect fill="#000000" opacity="0.5" transform="translate(8.500000, 12.000000) rotate(-90.000000) translate(-8.500000, -12.000000)" x="7.5" y="7.5" width="2" height="9" rx="1" />-->
+<!--																<path d="M9.70710318,15.7071045 C9.31657888,16.0976288 8.68341391,16.0976288 8.29288961,15.7071045 C7.90236532,15.3165802 7.90236532,14.6834152 8.29288961,14.2928909 L14.2928896,8.29289093 C14.6714686,7.914312 15.281055,7.90106637 15.675721,8.26284357 L21.675721,13.7628436 C22.08284,14.136036 22.1103429,14.7686034 21.7371505,15.1757223 C21.3639581,15.5828413 20.7313908,15.6103443 20.3242718,15.2371519 L15.0300721,10.3841355 L9.70710318,15.7071045 Z" fill="#000000" fill-rule="nonzero" transform="translate(14.999999, 11.999997) scale(1, -1) rotate(90.000000) translate(-14.999999, -11.999997)" />-->
+<!--															</g>-->
+<!--														</svg>-->
+													</span>
+													<!--end::Svg Icon-->
+													</button>
+												</div>
+												<!--end::Wrapper-->
+											</div>
+											<!--end::Actions-->
+										</form>
+										<!--end::Form-->
+									</div>
+									<!--end::Content-->
+								</div>

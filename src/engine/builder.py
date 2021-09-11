@@ -4,6 +4,8 @@ import time
 from dash import html, dcc
 import dash_bootstrap_components as dbc
 
+html_tag_set = set(html.__all__)
+
 
 class DashTag(object):
     def __init__(self, tag_name, attrs, children):
@@ -20,25 +22,19 @@ class DashTag(object):
                 attrs['id'] = json.loads(id_val)
 
         has_return = False
-        if tag_name == 'input':
+        tag_name = tag_name.capitalize()
+        if tag_name == 'Input':
             if 'type' in attrs and attrs['type'] != 'text':
-                # input_value = attrs.get('value', None)
-                # if attrs['type'] == 'checkbox':
-                #     if input_value is None:
-                #         input_value = 1
-                #         dbc.Checkbox
-                #     tag = getattr(dbc, 'Checkbox')
-                # else:
-                #     tag = getattr(dbc, 'Input')
                 tag = getattr(dbc, 'Input')
             else:
-                tag = getattr(dcc, tag_name.capitalize())
+                tag = getattr(dcc, 'Input')
 
-            # tag = getattr(dcc, tag_name.capitalize())
-        else:
+        elif tag_name in html_tag_set:
             tag = getattr(html, tag_name.capitalize())
+        else:
+            # pass
+            print('>>>>>>>>>>>>>', tag_name)
 
-        # print('>>>>>>>>>>>>>', type(tag), tag.available_properties)
         try:
             return_tag = tag(**attrs, children=children)
         except TypeError:

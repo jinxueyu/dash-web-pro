@@ -5,3 +5,5 @@ pandas
 multiprocess
 diskcache
 psutil
+sd-material-ui
+dash-ace
