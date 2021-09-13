@@ -154,4 +154,4 @@ def btn_interact(n_clicks, states_input):
     result = action_callback(n_clicks, states_input)
     if result is None or result['triggered'] is False:
         return None
-    return result
+    return result['result']

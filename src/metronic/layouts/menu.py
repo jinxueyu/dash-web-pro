@@ -9,15 +9,18 @@ def accordion_menu(menu_text, menu_icon, accordion_id, parent_id, children):
     else:
         icon = html.Span(className="menu-icon", children=[html.I(className="bi bi-" + menu_icon + " fs-2")])
 
-    return html.Div(className="menu-item menu-accordion", id={'type': 'menu-accordion', 'parent': parent_id, 'menu-id': accordion_id},
-                    children=[html.Span(className="menu-link", id={'type': 'menu-accordion-button', 'menu-id': accordion_id}, n_clicks=0,
-                                        children=[icon,
-                                                  html.Span(menu_text, className="menu-title"),
-                                                  html.Span(className="menu-arrow")]
-                                        ),
-                              html.Div(className="menu-sub menu-sub-accordion menu-active-bg", children=children)
-                              ]
-                    )
+    return html.Div(
+        id={'type': 'menu-accordion', 'parent': parent_id, 'menu-id': accordion_id},
+        className="menu-item menu-accordion",
+        **{"data-kt-menu-trigger": "click"},
+        children=[html.Span(className="menu-link", id={'type': 'menu-accordion-button', 'menu-id': accordion_id}, n_clicks=0,
+                            children=[icon,
+                                      html.Span(menu_text, className="menu-title"),
+                                      html.Span(className="menu-arrow")]
+                            ),
+                  html.Div(className="menu-sub menu-sub-accordion menu-active-bg", children=children)
+                  ]
+    )
 
 
 def aside_menu_item(menu_type, menu_icon, menu_text, menu_link=None, item_control=None, menu_action=None, children=None, accordion_id=None, parent_id=None):
@@ -28,19 +31,24 @@ def aside_menu_item(menu_type, menu_icon, menu_text, menu_link=None, item_contro
                                      children=html.Span(menu_text,
                                                         className="menu-section text-muted text-uppercase fs-8 ls-1"))
                         ])
-    elif menu_type == 'accordion':
+
+    if menu_type == 'accordion':
         return accordion_menu(menu_text, menu_icon, accordion_id, parent_id, children)
-    elif menu_type == 'link':
+
+    if menu_type == 'link':
+
         if menu_icon == 'bullet':
             icon = html.Span(className="menu-bullet", children=[html.Span(className="bullet bullet-dot")])
         else:
             icon = html.Span(className="menu-icon", children=[html.I(className="bi bi-" + menu_icon + " fs-3")])
+
         return html.Div(className="menu-item",
                         children=[
-                            html.A(className="menu-link",
-                                   id={'type': 'btn_link', 'control': item_control, 'action': menu_action, 'name': menu_text},
-                                   href=menu_link,
-                                   children=[icon, html.Span(menu_text, className="menu-title")])]
+                            html.A(
+                                id={'type': 'btn_link', 'control': item_control, 'action': menu_action, 'name': menu_text},
+                                className="menu-link",
+                                href=menu_link,
+                                children=[icon, html.Span(menu_text, className="menu-title")])]
                         )
 
 

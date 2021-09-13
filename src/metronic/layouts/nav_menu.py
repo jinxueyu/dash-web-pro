@@ -76,5 +76,8 @@ head_menu = [
 ]
 
 
+head_menu = [dcc.Link('NLP', href='/nlp'), dcc.Link('Chat', href='/chat')]
+
+
 def build_nav_menu():
     return build_tag(menu_config, head_menu)

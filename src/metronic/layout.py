@@ -28,6 +28,7 @@ def build_normal_page(content_container, menu_config):
     nav_bar = widegets.get_layout('content.navbar')
     top_bar = widegets.get_layout('content.topbar')
 
+    # content
     toolbar_create = widegets.get_widget('content.toolbar_create')
     toolbar_title = widegets.get_widget('content.toolbar_title')
     toolbar_filter = widegets.get_widget('content.toolbar_filter')

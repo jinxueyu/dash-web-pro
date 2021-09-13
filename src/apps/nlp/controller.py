@@ -1,6 +1,6 @@
 import dash_echarts
 
-import layouts.nlp as layout
+from apps.nlp import layout
 from core.controller import Controller
 
 from engine.widgets_manager import Widgets
@@ -128,7 +128,7 @@ class NlpController(Controller):
 
     def ide_commit(self, code, **kwargs):
         result = 'hahahahha'
-        return code
+        return result
 
 
 controller = NlpController()

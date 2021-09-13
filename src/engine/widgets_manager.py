@@ -29,11 +29,15 @@ class Widget(object):
                         prop_name = list_v[2:-2]
                         if prop_name in self.keys:
                             v[i] = kwargs[prop_name]
+                        else:
+                            v[i] = ''
 
             if type(v) is str and v.startswith('{{') and v.endswith('}}'):
                 prop_name = v[2:-2]
                 if prop_name in self.keys:
                     _config[k] = kwargs[prop_name]
+                else:
+                    _config[k] = ''
 
     def __call__(self, *args, **kwargs):
 
@@ -108,11 +112,22 @@ class Widgets(object):
         return Widgets._instance
 
     def init(self, template_path):
-        layouts_path = 'layouts'
-        self.layout_dict = init_widgets(template_path, layouts_path)
+        template_paths = None
+        if type(template_path) is str:
+            template_paths = [template_path]
+        else:
+            template_paths = template_path
 
-        widget_path = 'widgets'
-        self.widget_dict = init_widgets(template_path, widget_path)
+        self.layout_dict = {}
+        self.widget_dict = {}
+        for p in template_paths:
+            layouts_path = 'layouts'
+            d = init_widgets(p, layouts_path)
+            self.layout_dict.update(d)
+
+            widget_path = 'widgets'
+            d = init_widgets(p, widget_path)
+            self.widget_dict.update(d)
 
     def get_input_widget(self, widget_name, control, action, name):
         if widget_name == 'checklist':

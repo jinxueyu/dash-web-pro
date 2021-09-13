@@ -7,7 +7,8 @@ from apps.chat import callbacks
 from apps.nlp import callbacks
 from core import callbacks
 
-from apps.nlp import controller
+from apps.nlp import controller as nlp_controller
+from apps.chat import controller as chat_controller
 
 app.layout = html.Div([
     dcc.Location(id='url', refresh=False),

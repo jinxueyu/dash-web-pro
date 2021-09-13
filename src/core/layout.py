@@ -13,14 +13,6 @@ index_string = """<!DOCTYPE html>
             {%scripts%}
             {%renderer%}
         </footer>
-        <!--begin::Javascript-->
-        <!--begin::Global Javascript Bundle(used by all pages)-->
-
-        <!--end::Global Javascript Bundle-->
-        <!--begin::Page Custom Javascript(used by this page)-->
-
-        <!--end::Page Custom Javascript-->
-        <!--end::Javascript-->
     </body>
 </html>"""
 
@@ -30,6 +22,6 @@ external_stylesheets = ['https://fonts.googleapis.com/css?family=Poppins:300,400
                         'assets/css/style.bundle.css',
                         'assets/css/custom/style.input.css'
                         ]
-external_scripts = None
+external_scripts = []
 assets_ignore_str = '(css|js)'
 template_name = '../metronic'

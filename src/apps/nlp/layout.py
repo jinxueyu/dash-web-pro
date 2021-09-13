@@ -17,16 +17,16 @@ def layout(widgets, menu_config):
 def account_basic_info():
     toolbar_title = Widgets.instance().get_widget('content.toolbar_title')
 
-    info_page = Widgets.instance().get_widget('common.account_basic_info')
-    print('------', info_page)
     checklist = Widgets.instance().get_input_widget('checklist', 'nlp', 'action', 'communication')
+
+    info_page = Widgets.instance().get_widget('nlp.account_basic_info')
 
     return info_page(checklist_communication=checklist), toolbar_title(title='Hello', sub_title='basic')
 
 
 def ide_layout(result):
     widegets = Widgets.instance()
-    webide = widegets.get_layout('nlp.webide')
+    webide = widegets.get_widget('nlp.webide')
 
     toolbar_title = Widgets.instance().get_widget('content.toolbar_title')
     ide_widget = dash_ace.DashAceEditor(
