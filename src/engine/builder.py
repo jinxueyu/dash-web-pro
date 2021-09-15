@@ -28,7 +28,8 @@ class DashTag(object):
                 tag = getattr(dbc, 'Input')
             else:
                 tag = getattr(dcc, 'Input')
-
+        elif tag_name == 'Textarea':
+            tag = getattr(dcc, 'Textarea')
         elif tag_name in html_tag_set:
             tag = getattr(html, tag_name.capitalize())
         else:

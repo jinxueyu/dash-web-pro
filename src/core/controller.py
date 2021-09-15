@@ -6,6 +6,7 @@ class Controller(object):
     def __init__(self, name):
         self.name = name
         Controllers.instance().regist(self)
+        print(name, ' controller init..')
 
 
 class Controllers(object):

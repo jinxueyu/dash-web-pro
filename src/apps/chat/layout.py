@@ -22,4 +22,6 @@ menu_config = [
         }
 ]
 
-layout = build_normal_page(build_chat_private(), menu_config)
+toolbar_title = Widgets.instance().get_widget('wrapper.toolbar_title')
+
+layout = build_normal_page(build_chat_private(), toolbar_title(), menu_config)

@@ -35,9 +35,9 @@ def parse_action(ctx):
 
 
 page_route_dict = {
-    '/': None,
+    '/sample': ('sample', 'dash_board_page'),
     '/chat': ('chat', 'layout'),
-    '/nlp': {'control': 'nlp', 'action': 'dash_board_page'}
+    '/nlp': {'control': 'nlp', 'action': 'index_layout'}
 }
 
 
@@ -74,7 +74,7 @@ def page_routing(pathname):
     State('toolbar_title', 'children'),
     prevent_initial_call=True
 )
-def btn_link(n_clicks, state0, state1):
+def btn_link_callback(n_clicks, state0, state1):
     print('btn_link fire:', n_clicks)
     ctx = dash.callback_context
 
@@ -103,13 +103,13 @@ def action_callback(n_clicks, states_input):
     print('    ', states_input)
 
     if ctx.triggered[0]['value'] is None:
-        print('   >> without bullets <<  ')
+        print('   >> without bullets << trigger ')
         result['triggered'] = False
         return result
 
     control, action = parse_action(ctx)
     if control is None or action is None:
-        print('   >> without bullets <<  ')
+        print('   >> without bullets << control ')
         result['triggered'] = False
         return result
 
@@ -130,11 +130,11 @@ def action_callback(n_clicks, states_input):
 
 @app.callback(
     Output({'type': 'action_backdrop',  'control': MATCH, 'action': MATCH, 'name': 0}, 'children'),
-    Input({'type': 'btn_action', 'control': MATCH, 'action': MATCH, 'name': ALL}, 'n_clicks'),
-    State({'type': 'action_input', 'control': MATCH, 'action': MATCH, 'name': ALL}, 'value'),
+    Input({'type': 'btn_action',        'control': MATCH, 'action': MATCH, 'name': ALL}, 'n_clicks'),
+    State({'type': 'action_input',      'control': MATCH, 'action': MATCH, 'name': ALL}, 'value'),
     prevent_initial_call=True
 )
-def btn_action(n_clicks, states_input):
+def btn_action_callback(n_clicks, states_input):
     print('btn_action fire:', n_clicks)
     result = action_callback(n_clicks, states_input)
     if result is None or result['triggered'] is False:
@@ -145,11 +145,11 @@ def btn_action(n_clicks, states_input):
 
 @app.callback(
     Output({'type': 'action_box',  'control': MATCH, 'action': MATCH}, 'children'),
-    Input({'type': 'btn_action', 'control': MATCH, 'action': MATCH, 'name': ALL}, 'n_clicks'),
+    Input({'type': 'btn_interact', 'control': MATCH, 'action': MATCH}, 'n_clicks'),
     State({'type': 'action_input', 'control': MATCH, 'action': MATCH, 'name': ALL}, 'value'),
     prevent_initial_call=True
 )
-def btn_interact(n_clicks, states_input):
+def btn_interact_callback(n_clicks, states_input):
     print('btn_interact fire:', n_clicks)
     result = action_callback(n_clicks, states_input)
     if result is None or result['triggered'] is False:

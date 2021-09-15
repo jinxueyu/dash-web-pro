@@ -152,16 +152,18 @@ if __name__ == '__main__':
         </div>
         <!--end::Body-->
     </div>
+    <span id='div2'>
+    </span>
     '''
 
     code = parse(html)
 
-    # print(code)
-    # print(json.dumps(code, indent=4))'
+    print(code)
+    print(json.dumps(code, indent=4))
 
     # d = {'k1': 'v1', 'k2': 'v2'}
     # func(k3='v3', k4='v4', **d)
-    id_val = "{'type': 'input_commit', 'control': 'nlp', 'action': 'form_commit', 'index': 2}"
-    val = json.loads(id_val)
-    print(val)
+    # id_val = "{'type': 'input_commit', 'control': 'nlp', 'action': 'form_commit', 'index': 2}"
+    # val = json.loads(id_val)
+    # print(val)
 
