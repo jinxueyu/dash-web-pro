@@ -1,13 +1,28 @@
 from dash import html
-
+from dash_svg_component import Svg
 from engine.builder import build_tag
 
 
+def build_icon(icon_name):
+    if icon_name == 'bullet':
+        return html.Span(className="menu-bullet", children=[html.Span(className="bullet bullet-dot")])
+
+    return html.Span(html.Span(Svg(src='assets/media/icons/duotone/Design/PenAndRuller.svg'),
+                               className="svg-icon svg-icon-2"),
+                     className="menu-icon")
+
+#                                           <span class="svg-icon svg-icon-2">
+# 												<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+# 													<rect x="2" y="2" width="9" height="9" rx="2" fill="black"></rect>
+# 													<rect opacity="0.3" x="13" y="2" width="9" height="9" rx="2" fill="black"></rect>
+# 													<rect opacity="0.3" x="13" y="13" width="9" height="9" rx="2" fill="black"></rect>
+# 													<rect opacity="0.3" x="2" y="13" width="9" height="9" rx="2" fill="black"></rect>
+# 												</svg>
+# 											</span>
+
+
 def accordion_menu(menu_text, menu_icon, accordion_id, parent_id, children):
-    if menu_icon == 'bullet':
-        icon = html.Span(className="menu-bullet", children=[html.Span(className="bullet bullet-dot")])
-    else:
-        icon = html.Span(className="menu-icon", children=[html.I(className="bi bi-" + menu_icon + " fs-2")])
+    icon = menu_icon
 
     return html.Div(
         id={'type': 'menu-accordion', 'parent': parent_id, 'menu-id': accordion_id},
@@ -32,16 +47,12 @@ def aside_menu_item(menu_type, menu_icon, menu_text, menu_link=None, item_contro
                                                         className="menu-section text-muted text-uppercase fs-8 ls-1"))
                         ])
 
+    icon = build_icon(menu_icon)
+
     if menu_type == 'accordion':
-        return accordion_menu(menu_text, menu_icon, accordion_id, parent_id, children)
+        return accordion_menu(menu_text, icon, accordion_id, parent_id, children)
 
     if menu_type == 'link':
-
-        if menu_icon == 'bullet':
-            icon = html.Span(className="menu-bullet", children=[html.Span(className="bullet bullet-dot")])
-        else:
-            icon = html.Span(className="menu-icon", children=[html.I(className="bi bi-" + menu_icon + " fs-3")])
-
         return html.Div(className="menu-item",
                         children=[
                             html.A(
