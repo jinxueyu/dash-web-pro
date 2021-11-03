@@ -19,4 +19,5 @@ app.layout = html.Div([
 # https://github.com/plotly/dash-sample-apps/blob/main/apps/dash-translate/app.py
 
 if __name__ == '__main__':
+    print('Dash is running on http://127.0.0.1:8050/')
     app.run_server(debug=True)

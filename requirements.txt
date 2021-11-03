@@ -7,3 +7,4 @@ diskcache
 psutil
 sd-material-ui
 dash-ace
+sqlalchemy
