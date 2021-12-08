@@ -1,4 +1,5 @@
 import os
+import re
 import threading
 import time
 
@@ -25,24 +26,35 @@ class Widget(object):
 
             if type(v) is list:
                 for i, list_v in enumerate(v):
-                    if type(list_v) is str and list_v.startswith('{{') and list_v.endswith('}}'):
-                        prop_name = list_v[2:-2]
-                        if prop_name in self.keys:
-                            v[i] = kwargs[prop_name]
-                        else:
-                            v[i] = ''
+                    if type(list_v) is str:
+                        v[i] = self.fillup_placeholder(kwargs, list_v)
 
-            if type(v) is str and v.startswith('{{') and v.endswith('}}'):
-                prop_name = v[2:-2]
+            if type(v) is str:
+                _config[k] = self.fillup_placeholder(kwargs, v)
+
+    def fillup_placeholder(self, kwargs, v):
+        if v.startswith('{{') and v.endswith('}}'):
+            prop_name = v[2:-2]
+            if prop_name in self.keys:
+                return kwargs[prop_name]
+            else:
+                return ''
+
+        groups = re.findall(r'\{\{.*?\}\}', v)
+        if groups is not None:
+            for m in groups:
+                prop_name = m[2:-2]
                 if prop_name in self.keys:
-                    _config[k] = kwargs[prop_name]
+                    v = v.replace(m, kwargs[prop_name])
                 else:
-                    _config[k] = ''
+                    v = v.replace(m, '')
+        return v
 
     def __call__(self, *args, **kwargs):
 
         _config = copy.deepcopy(self.config)
 
+        # todo can be replace with kwargs
         self.keys = set(kwargs.keys())
 
         self.set_params(_config, kwargs)
@@ -170,10 +182,10 @@ def test_dict(d):
 
 
 if __name__ == '__main__':
-    widgets = Widgets('.')
+    # widgets = Widgets('../me')
     # widgets = init_widgets('layouts')
-    aside = widgets.get_layout('aside.aside')
-    print(aside())
+    aside = widgets.get_widget('nlp.card')
+    print(aside(action_name='bigbigbig'))
     # print(widget(aside=['hello aside!!!']))
 
     d1 = {'name': 'nuannuan'}

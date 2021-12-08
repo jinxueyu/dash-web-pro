@@ -1,3 +1,5 @@
+import re
+
 import dash
 import dash_html_components as html
 import dash_core_components as dcc
@@ -61,6 +63,14 @@ def article_view(book_id, article_id, page_num):
 
     article = get_article(book_id, article_id, page_num)
 
+    # <h2 id="intro">介绍<a class="anchor" href="#intro">#</a></h2>
+    # intro_title = html.H2(
+    #     ['介绍', html.A('#', className='anchor', href='#intro')],
+    #     id='intro'
+    # )
+    article_title = html.H1(article['title'], className='article__title')
+    intro = html.Blockquote(article['intro'])
+
     title = html.H1(add_sup(article['title']))
     page_items = [title]
 
@@ -68,7 +78,7 @@ def article_view(book_id, article_id, page_num):
     if 'author' in article:
         author_list.extend(['作者：', html.Span(article['author'])])
 
-    if 'date' in article:
+    if 'date' in article and article['date'] is not None:
         year_len = len(article['date'][0])
         month_len = len(article['date'][1])
         day_len = len(article['date'][2])
@@ -92,27 +102,82 @@ def article_view(book_id, article_id, page_num):
 
     page_items.append(author)
 
-    content = []
-    for line in article['content']:
-        content.append(html.P(add_sup(line)))
-    page_items.extend(content)
+    content_items = [html.P(add_sup(line)) for line in article['content']]
+    page_items.extend(content_items)
 
-    if 'notes' in article:
-        note_items = []
-        for idx, line in enumerate(article['notes'], start=1):
+    if 'footnotes' in article:
+        footnote_items = []
+        for idx, line in enumerate(article['footnotes'], start=1):
             if len(line) > 0:
-                note_items.append(html.Li([html.A('^', href="#ref-"+str(idx)), line], id='fn-'+str(idx)))
+                num = line[1: line.find(']')]
+                line = re.sub(r'\[\d+\]', '', line)
+                footnote_items.append(html.Li([html.A('^', href="#ref-"+str(num)), line], id='fn-'+str(num)))
 
-        if len(note_items) > 0:
-            notes = html.Footer(html.Ol(note_items), className='heti-fn')
-            page_items.append(notes)
+        if len(footnote_items) > 0:
+            # footnotes = html.Details([
+            #     html.Summary('注释', id='footnotes'),
+            #
+            # ], open=True)
+            footnotes = html.Div(html.Ol(footnote_items), className='heti-fn')
+            page_items.append(footnotes)
 
-    page = html.Div(
-        page_items,
-        className='heti--ancient',
+    content_title = html.H2([
+        '正文',
+        html.A('#', className='anchor', href='#content')
+    ], id='content')
+    content = html.Section(
+        html.Div(page_items, className='heti--ancient'),
+        className='demo'
     )
 
-    return html.Section(page, className='demo')
+    translation = ''
+    if article['translation'] is not None:
+        translation_items = [html.P(add_sup(line)) for line in article['translation']]
+        translation = html.Details([
+            html.Summary('译文', id='translation'),
+            html.Section(
+                html.Div(translation_items, className='heti--ancient'),
+                className='demo'
+            )
+        ], open=True)
+        # translation_title = html.H2([
+        #     '译文',
+        #     html.A('#', className='anchor', href='#translation')
+        # ], id='translation')
+        # translation = html.Section(
+        #     html.Div(translation_items, className='heti--ancient'),
+        #     className='demo'
+        # )
+
+    notes = ''
+    if article['notes'] is not None:
+        notes_items = [html.P(add_sup(line)) for line in article['notes']]
+        notes = html.Details([
+            html.Summary('解读', id='notes'),
+            html.Section(
+                html.Div(notes_items, className='heti--ancient'),
+                className='demo'
+            )
+        ], open=True)
+
+    nav_items = [
+        html.Li(html.A('介绍', href='#intro')),
+        html.Li(html.A([
+            '正文',
+            html.Ul([html.Li(html.A('注释', href='#footnotes'))])
+        ], href='#content')),
+        html.Li(html.A('译文', href='#translation')),
+        html.Li(html.A('解读', href='#notes')),
+    ]
+
+    nav = html.Nav(
+        html.Details([
+            html.Summary('目录'),
+            html.Ol(nav_items)
+        ], open=True),
+        className='article__nav heti-skip')
+
+    return [article_title, intro, nav, content_title, content, translation, notes]
 
 
 def book_view(book_id):

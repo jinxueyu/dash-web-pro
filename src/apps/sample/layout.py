@@ -11,8 +11,7 @@ def container(widgets):
 
 
 def layout(widgets, menu_config):
-    toolbar = build_toolbar(title='Hello', sub_title='basic')
-    return build_normal_page(container(widgets), toolbar, menu_config)
+    return build_normal_page(container(widgets), menu_config, 'Hello', 'basic')
 
 
 def account_basic_info():

@@ -78,6 +78,9 @@ class Article(Base):
     pub_date = Column(String(16))
     title = Column(String(32))
     content = Column(Text)
+    footnotes = Column(Text)
+    intro = Column(Text)
+    translation = Column(Text)
     notes = Column(Text)
 
 

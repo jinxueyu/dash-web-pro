@@ -2,6 +2,8 @@ import json
 
 from bs4 import BeautifulSoup as soup, NavigableString, Comment
 
+from engine.builder import build_tag
+
 code_template = '''html.{}({}, 
 {}children=[{}])'''
 
@@ -36,9 +38,9 @@ def parser_code(tag_name, attrs, children, deep_len):
                 val = attr[1]
             attr_dict[attr[0]] = val
 
-    print('tag_name = ', tag_name)
-    print('attrs = ', attr_dict)
-    print('build_tag(tag_name, attrs)')
+    # print('tag_name = ', tag_name)
+    # print('attrs = ', attr_dict)
+    # print('build_tag(tag_name, attrs)')
 
     tag_json = {
         'tag_name': tag_name,
@@ -50,6 +52,7 @@ def parser_code(tag_name, attrs, children, deep_len):
 
 
 def parse_tag(html_tag):
+
     if type(html_tag) is Comment:
         return None
 
@@ -77,7 +80,6 @@ def parse_tag(html_tag):
             p = False
             if val.startswith('background'):
                 p = True
-                print('>>>>>', val)
             vals = val.split(';')
             val = {}
             for v in vals:
@@ -90,9 +92,6 @@ def parse_tag(html_tag):
                         for c in range(1, len(arr)):
                             style_key += arr[c].capitalize()
                     val[style_key] = style[1].strip()
-
-            if p:
-                print('>>>>>', val)
 
         attr_dict[attr] = val
 
@@ -119,8 +118,8 @@ def parse_tag(html_tag):
 
 
 def parse(text):
-    doc = soup(text, 'lxml')
-    tag = doc.body.contents[0]
+    doc = soup(text, 'xml')
+    tag = doc.contents[0]
     return parse_tag(tag)
 
 
@@ -130,40 +129,34 @@ def func(**kwargs):
 
 if __name__ == '__main__':
     html = '''
-     <div class="card card-xl-stretch mb-xl-8">
-        <!--begin::Header-->
-        <div class="card-header border-0 pt-5">
-            <!--begin::Title-->
-            <h3 class="card-title align-items-start flex-column">
-                <span class="card-label fw-bolder fs-3 mb-1">Recent Statistics</span>
-                <span class="text-muted fw-bold fs-7">More than 400 new members</span>
-            </h3>
-            <!--end::Title-->
-            <!--begin::Toolbar-->
-            
-            <!--end::Toolbar-->
-        </div>
-        <!--end::Header-->
-        <!--begin::Body-->
-        <div class="card-body">
-            <!--begin::Chart-->
-            <div id='{"id": "kt_charts_widget_1_chart"}' style="height: 350px"></div>
-            <!--end::Chart-->
-        </div>
-        <!--end::Body-->
-    </div>
-    <span id='div2'>
-    </span>
+     <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+													<path d="M2.56066017,10.6819805 L4.68198052,8.56066017 C5.26776695,7.97487373 6.21751442,7.97487373 6.80330086,8.56066017 L8.9246212,10.6819805 C9.51040764,11.267767 9.51040764,12.2175144 8.9246212,12.8033009 L6.80330086,14.9246212 C6.21751442,15.5104076 5.26776695,15.5104076 4.68198052,14.9246212 L2.56066017,12.8033009 C1.97487373,12.2175144 1.97487373,11.267767 2.56066017,10.6819805 Z M14.5606602,10.6819805 L16.6819805,8.56066017 C17.267767,7.97487373 18.2175144,7.97487373 18.8033009,8.56066017 L20.9246212,10.6819805 C21.5104076,11.267767 21.5104076,12.2175144 20.9246212,12.8033009 L18.8033009,14.9246212 C18.2175144,15.5104076 17.267767,15.5104076 16.6819805,14.9246212 L14.5606602,12.8033009 C13.9748737,12.2175144 13.9748737,11.267767 14.5606602,10.6819805 Z" fill="#000000" opacity="0.3" />
+													<path d="M8.56066017,16.6819805 L10.6819805,14.5606602 C11.267767,13.9748737 12.2175144,13.9748737 12.8033009,14.5606602 L14.9246212,16.6819805 C15.5104076,17.267767 15.5104076,18.2175144 14.9246212,18.8033009 L12.8033009,20.9246212 C12.2175144,21.5104076 11.267767,21.5104076 10.6819805,20.9246212 L8.56066017,18.8033009 C7.97487373,18.2175144 7.97487373,17.267767 8.56066017,16.6819805 Z M8.56066017,4.68198052 L10.6819805,2.56066017 C11.267767,1.97487373 12.2175144,1.97487373 12.8033009,2.56066017 L14.9246212,4.68198052 C15.5104076,5.26776695 15.5104076,6.21751442 14.9246212,6.80330086 L12.8033009,8.9246212 C12.2175144,9.51040764 11.267767,9.51040764 10.6819805,8.9246212 L8.56066017,6.80330086 C7.97487373,6.21751442 7.97487373,5.26776695 8.56066017,4.68198052 Z" fill="#000000" />
+												</svg>
+    '''
+
+    html='''
+    <textarea id="{'type': 'action_input', 'control': 'nlp', 'action': '{{action_name}}', 'name': 'text'}" class="form-control form-control-solid" rows="3" name="target_details" placeholder="Type Text">
+													中国共产党的其他领袖人物，每一个都可以同古今中外社会历史上的人物相提并论，但无人能够比得上毛泽东。-- 美国作家史沫特莱
+													</textarea>
     '''
 
     code = parse(html)
-
     print(code)
-    print(json.dumps(code, indent=4))
+
+    # print(code)
+    # print(json.dumps(code, indent=4))
 
     # d = {'k1': 'v1', 'k2': 'v2'}
     # func(k3='v3', k4='v4', **d)
     # id_val = "{'type': 'input_commit', 'control': 'nlp', 'action': 'form_commit', 'index': 2}"
     # val = json.loads(id_val)
     # print(val)
+
+    tag = build_tag(code)
+
+    print(tag)
+
+    from dash import html, dcc
+    dcc.Textarea()
 

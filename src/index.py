@@ -7,6 +7,7 @@ from apps.chat import callbacks
 from apps.nlp import callbacks
 from core import callbacks
 
+from apps.frontend import controller as fe_controller
 from apps.nlp import controller as nlp_controller
 from apps.chat import controller as chat_controller
 from apps.sample import controller as sample_controller

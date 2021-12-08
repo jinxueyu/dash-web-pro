@@ -13,6 +13,7 @@ def exec_action_func(control, action, **params):
 
     controller = Controllers.instance().get(control)
     func = getattr(controller, action)
+    print(params)
     return func(**params)
 
 
@@ -37,13 +38,15 @@ def parse_action(ctx):
 page_route_dict = {
     '/sample': ('sample', 'dash_board_page'),
     '/chat': ('chat', 'layout'),
-    '/nlp': {'control': 'nlp', 'action': 'index_layout'}
+    '/nlp': {'control': 'nlp', 'action': 'index_layout'},
+    '/frontend': ('frontend', 'index')
 }
 
 
 @app.callback(
     Output('page-content', 'children'),
-    Input('url', 'pathname')
+    Input('url', 'pathname'),
+    prevent_initial_call=True
 )
 def page_routing(pathname):
     print('fire-->>> page_routing ', pathname)
@@ -67,30 +70,42 @@ def page_routing(pathname):
 
 
 @app.callback(
-    Output('kt_content_container', 'children'),
-    Output('toolbar_title', 'children'),
-    Input({'type': 'btn_link', 'control': ALL, 'action': ALL, 'name': ALL}, 'n_clicks'),
+    Output('kt_post', 'children'),
+    Output('kt_header_nav', 'children'),
+    Input({'type': 'btn_link', 'control': ALL, 'action': ALL, 'id': ALL}, 'n_clicks'),
     State('kt_content_container', 'children'),
-    State('toolbar_title', 'children'),
+    State('kt_header_nav', 'children'),
     prevent_initial_call=True
 )
 def btn_link_callback(n_clicks, state0, state1):
     print('btn_link fire:', n_clicks)
     ctx = dash.callback_context
 
-    print('     ', ctx.triggered, '\n    states_list  ==', ctx.states_list, '\n  states  ==', ctx.states,
-          '\n   inputs_list  ', ctx.inputs_list, '\n    inputs  ', ctx.inputs)
+    print('     ', ctx.triggered,
+          '\n    states_list  ==', ctx.states_list,
+          '\n  states  ==', ctx.states,
+          '\n   inputs_list  ', ctx.inputs_list,
+          '\n    inputs  ', ctx.inputs
+          )
 
     if ctx.triggered[0]['value'] is None:
         print('   >> without bullets <<  ')
         return state0, state1
 
     control, action = parse_action(ctx)
+    print('fire', control, action)
     if control is None or action is None:
         print('   >> without bullets <<  ')
         return state0, state1
 
-    return exec_action_func(control, action)
+    s0, s1 = exec_action_func(control, action)
+
+    if s0 is not None:
+        state0 = s0
+    if s1 is not None:
+        state1 = s1
+
+    return state0, state1
 
 
 def action_callback(n_clicks, states_input):
@@ -99,13 +114,13 @@ def action_callback(n_clicks, states_input):
     # if ctx.triggered[0]['value'] is None:
     #     print('   >> without bullets <<  ')
 
-    print('    ', ctx.inputs, '\n', ctx.states_list, '\n     ')
-    print('    ', states_input)
+    print(' btn inputs   ', ctx.inputs, '\n', ctx.states_list, '\n     ')
+    print(' btn states   ', states_input)
 
     if ctx.triggered[0]['value'] is None:
         print('   >> without bullets << trigger ')
         result['triggered'] = False
-        return result
+        return result['result']
 
     control, action = parse_action(ctx)
     if control is None or action is None:
@@ -124,7 +139,10 @@ def action_callback(n_clicks, states_input):
             print('   ==>>>> ', type(input_id), input_id, input_value)
             req[input_id['name']] = input_value
 
+    print('  btn req', req)
+
     result['result'] = exec_action_func(control, action, **req)
+    print(type(result['result']), result['result'])
     return result
 
 
@@ -151,7 +169,12 @@ def btn_action_callback(n_clicks, states_input):
 )
 def btn_interact_callback(n_clicks, states_input):
     print('btn_interact fire:', n_clicks)
+    if n_clicks is None:
+        print('btn inter states', states_input)
+        return states_input[0]
+
     result = action_callback(n_clicks, states_input)
     if result is None or result['triggered'] is False:
+        # todo
         return None
     return result['result']

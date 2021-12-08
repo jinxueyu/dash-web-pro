@@ -4,7 +4,7 @@ from metronic.layouts.nav_menu import build_nav_menu
 from engine.widgets_manager import Widgets
 
 
-def build_normal_page(contains, content_toolbar, menu_config):
+def build_normal_page(container, menu_config, title, sub_title):
     widegets = Widgets.instance()
     main_layout = widegets.get_layout('layout')
 
@@ -14,36 +14,39 @@ def build_normal_page(contains, content_toolbar, menu_config):
     aside_brand = widegets.get_layout('aside.brand')
     aside_footer = widegets.get_layout('aside.footer')
 
+    aside_footer = aside_footer()
+
     menu = build_menu_tag(menu_config)
     layout_aside = layout_aside(
         aside_menu=aside_menu(menu=menu),
         aside_brand=aside_brand(),
-        aside_footer=aside_footer()
+        aside_footer=aside_footer
     )
 
     # wrapper
-    layout_wrapper = widegets.get_layout('wrapper.wrapper')
-    wrapper_header = widegets.get_layout('wrapper.header')
-    wrapper_content = widegets.get_layout('wrapper.content')
-    wrapper_footer = widegets.get_layout('wrapper.footer')
+    wrapper = widegets.get_layout('wrapper.wrapper')
+    header = widegets.get_layout('wrapper.header')
+    content = widegets.get_layout('wrapper.content')
+    footer = widegets.get_layout('wrapper.footer')
 
-    nav_bar = widegets.get_layout('wrapper.navbar')
-    top_bar = widegets.get_layout('wrapper.topbar')
+    nav_bar = widegets.get_widget('wrapper.header.navbar')
+    top_bar = widegets.get_widget('wrapper.header.topbar')
 
-    content_container = build_container(contains)
+    page_title = widegets.get_widget('wrapper.page_title')
+    page_title = page_title(title=title, sub_title=sub_title)
 
-    layout_wrapper = layout_wrapper(
-        content_header=wrapper_header(content_navbar=nav_bar(menu=build_nav_menu()), content_topbar=top_bar()),
-        content_content=wrapper_content(content_toolbar=content_toolbar, content_container=content_container),
-        content_footer=wrapper_footer()
+    wrapper = wrapper(
+        header=header(navbar=nav_bar(page_title=page_title), topbar=top_bar()),
+        content=content(container=container),
+        footer=footer()
     )
 
-    return main_layout(aside=layout_aside, wrapper=layout_wrapper)
+    return main_layout(aside=layout_aside, wrapper=wrapper)
 
 
 def build_container(contains):
     widegets = Widgets.instance()
-    container = widegets.get_layout('wrapper.container')
+    container = widegets.get_widget('wrapper.container')
     return container(contains=contains)
 
 

@@ -19,5 +19,5 @@ CREATE TABLE tb_article(
    author         CHAR(16),
    `date`         CHAR(16),
    content        TEXT,
-   notes          TEXT
+   footnotes          TEXT
 );

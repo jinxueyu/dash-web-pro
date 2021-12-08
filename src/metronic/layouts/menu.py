@@ -7,18 +7,11 @@ def build_icon(icon_name):
     if icon_name == 'bullet':
         return html.Span(className="menu-bullet", children=[html.Span(className="bullet bullet-dot")])
 
-    return html.Span(html.Span(Svg(src='assets/media/icons/duotone/Design/PenAndRuller.svg'),
+    duotone = 'assets/media/icons/duotone/'
+
+    return html.Span(html.Span(Svg(src=duotone + icon_name + '.svg'),
                                className="svg-icon svg-icon-2"),
                      className="menu-icon")
-
-#                                           <span class="svg-icon svg-icon-2">
-# 												<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-# 													<rect x="2" y="2" width="9" height="9" rx="2" fill="black"></rect>
-# 													<rect opacity="0.3" x="13" y="2" width="9" height="9" rx="2" fill="black"></rect>
-# 													<rect opacity="0.3" x="13" y="13" width="9" height="9" rx="2" fill="black"></rect>
-# 													<rect opacity="0.3" x="2" y="13" width="9" height="9" rx="2" fill="black"></rect>
-# 												</svg>
-# 											</span>
 
 
 def accordion_menu(menu_text, menu_icon, accordion_id, parent_id, children):
@@ -38,13 +31,15 @@ def accordion_menu(menu_text, menu_icon, accordion_id, parent_id, children):
     )
 
 
-def aside_menu_item(menu_type, menu_icon, menu_text, menu_link=None, item_control=None, menu_action=None, children=None, accordion_id=None, parent_id=None):
+def aside_menu_item(menu_type, menu_icon, menu_text, menu_link=None, item_control=None, menu_action=None, children=None,
+                    accordion_id=None, parent_id=None):
     if menu_type == 'section':
         return html.Div(className="menu-item",
                         children=[
                             html.Div(className="menu-content pb-2",
-                                     children=html.Span(menu_text,
-                                                        className="menu-section text-muted text-uppercase fs-8 ls-1"))
+                                     children=html.Span(
+                                         menu_text,
+                                         className="menu-section text-muted text-uppercase fs-8 ls-1"))
                         ])
 
     icon = build_icon(menu_icon)
@@ -56,7 +51,7 @@ def aside_menu_item(menu_type, menu_icon, menu_text, menu_link=None, item_contro
         return html.Div(className="menu-item",
                         children=[
                             html.A(
-                                id={'type': 'btn_link', 'control': item_control, 'action': menu_action, 'name': menu_text},
+                                id={'type': 'btn_link', 'control': item_control, 'action': menu_action, 'id': accordion_id},
                                 className="menu-link",
                                 href=menu_link,
                                 children=[icon, html.Span(menu_text, className="menu-title")])]
