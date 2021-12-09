@@ -29,9 +29,6 @@ def page(title, sub_title, action_name):
 
 
 def build_tasks_view(head, data):
-    for item in data:
-        item['dep_rel'] = item['dep_tag']['rel']
-        item['dep_head'] = data[item['dep_tag']['head']-1]['word'] if item['dep_tag']['head'] > 0 else 'Head'
 
     thead_class = 'fw-bold fs-%d text-gray-800 border-bottom border-gray-200' % len(head)
     table_class = 'table table-hover table-rounded table-striped bg-secondary border gy-%d gs-%d' % (len(data), len(data))

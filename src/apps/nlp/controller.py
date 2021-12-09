@@ -2,7 +2,7 @@ import dash_echarts
 
 from apps.nlp import layout
 from apps.nlp.layout import build_ent_view
-from apps.nlp.service import NLPService
+from apps.nlp.service import NLPService, pos_tag_name, ner_tag_name, dep_tag_name
 from core.controller import Controller
 
 from engine.widgets_manager import Widgets
@@ -179,6 +179,13 @@ class NlpController(Controller):
             {'id': 'dep_head', 'name': '依存词'},
             {'id': 'dep_rel', 'name': '依存关系'}
         ]
+
+        for item in doc:
+            item['pos_tag'] = pos_tag_name.get(item['pos_tag'])
+            # item['word_tag'] =
+            item['ner_tag'] = ner_tag_name[item['ner_tag']]
+            item['dep_rel'] = dep_tag_name[item['dep_tag']['rel']]
+            item['dep_head'] = doc[item['dep_tag']['head'] - 1]['word'] if item['dep_tag']['head'] > 0 else 'Head'
 
         return layout.build_tasks_view(head, doc)
 

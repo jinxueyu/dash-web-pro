@@ -135,6 +135,45 @@ pos_tag_name = {
     'PER': '人名', 'LOC': '地名', 'ORG': '机构名', 'TIME': '时间'
 }
 
+ner_tag_name = {
+    "PERSON": "人",
+    "NORP": "团体",
+    "FAC": "建筑物",
+    "ORG": "机构",
+    "GPE": "国家、城市、州",
+    "LOC": "地点",
+    "PRODUCT": "物品",
+    "EVENT": "事件",
+    "WORK_OF_ART": "艺术作品",
+    "LAW": "法律文件",
+    "LANGUAGE": "语言",
+    "DATE": "日期",
+    "TIME": "时间",
+    "PERCENT": "百分比",
+    "MONEY": "货币",
+    "QUANTITY": "度量",
+    "ORDINAL": "序数词",
+    "CARDINAL": "数量词"
+}
+
+
+dep_tag_name = {
+    'SBV': '主谓关系',
+    'VOB': '动宾关系',
+    'POB': '介宾关系',
+    'ADV': '状中关系',
+    'CMP': '动补关系',
+    'ATT': '定中关系',
+    'F': '方位关系',
+    'COO': '并列关系',
+    'DBL': '兼语结构',
+    'DOB': '双宾语结构',
+    'VV': '连谓结构',
+    'IC': '子句结构',
+    'MT': '虚词成分',
+    'HED': '核心关系'
+}
+
 entity_tag_colors = {
     "ORG": "#7aecec",
     "PRODUCT": "#bfeeb7",
@@ -167,6 +206,7 @@ pos_tag_colors = {
     'PER': '#aa9cfc', 'LOC': '#ff9561', 'ORG': '#7aecec', 'TIME': '#bfe1d9'
 }
 
+pos_tag_
 
 class NLPService(object):
 
@@ -194,13 +234,6 @@ class NLPService(object):
         self.__summarizer = Summarizer(self.__lac, Word2VecInfer(self.__token_embedding))
 
     def _lac_tag(self, text):
-        # n	普通名词	f	方位名词	s	处所名词	nw	作品名
-        # nz	其他专名	v	普通动词	vd	动副词	vn	名动词
-        # a	形容词	ad	副形词	an	名形词	d	副词
-        # m	数量词	q	量词	r	代词	p	介词
-        # c	连词	u	助词	xc	其他虚词	w	标点符号
-        # PER	人名	LOC	地名	ORG	机构名	TIME	时间
-
         outputs = self.__lac(text)
         output = outputs[0]
 
